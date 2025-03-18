@@ -13,7 +13,7 @@ key: str = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
 # Consultar as tabelas da tabela "Clientes" no esquema 'public'
-response = supabase.table("Clientes").select("*").execute()
+response = supabase.table("Clientes").select("*").eq("id",1002).execute()
 
 # Exibir a resposta
 print("Resposta da consulta:", response)
@@ -25,3 +25,4 @@ if response.data:
         print(row)
 else:
     print("Nenhum dado encontrado na tabela 'Clientes'.")
+
