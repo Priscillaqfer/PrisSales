@@ -25,3 +25,4 @@ if response.data:
         print(row)
 else:
     print("Nenhum dado encontrado na tabela 'Clientes'.")
+#TESTE 123247s
