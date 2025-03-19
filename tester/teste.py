@@ -13,14 +13,12 @@ key: str = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
 # Consultar: response = supabase.table("Clientes").select("*").execute()
-data = {
-    "cpf_cnpj": "12345612355",
-    "nome": "ISABEL",
-    "email": "ISABEEL@TESTE1.COM"
-}
+
+cpf= "70927982481"
+
 
 # Inserção de dados na tabela "Clientes"
-response = supabase.table("Clientes").insert(data).execute()
+response = supabase.table("Clientes").select("*").eq("cpf_cnpj", cpf).execute()
 
 # Exibir a resposta
 print("Resposta da consulta:", response)

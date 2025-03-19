@@ -68,5 +68,24 @@ def cadastro_produto():
 
     return render_template('cadastro_produto.html')
 
+# Rota para buscar CPF e retornar os dados do cliente para alteração
+@app.route('/alterar_cliente_buscarcpf', methods=['GET', 'POST'])
+def alterar_cliente_buscarcpf():
+    if request.method == 'POST':
+        cpf = request.form['cpf']
+        # Consulta o cliente no Supabase onde o campo 'cpf_cnpj' é igual ao CPF informado.
+        response = supabase.table("Clientes").select("*").eq("cpf_cnpj", cpf).execute()
+
+        if response.data:
+            # Assumindo que o resultado é uma lista de dicionários, pegamos o primeiro registro.
+            cliente = response.data[0]
+            return render_template('alterar_cliente_dados.html', cliente=cliente)
+        else:
+            return "Cliente não encontrado", 404
+
+    # Se for GET, exibe o formulário para inserir o CPF
+    return render_template('alterar_cliente_buscarcpf.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
