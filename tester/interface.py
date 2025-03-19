@@ -16,10 +16,11 @@ supabase: Client = create_client(url, key)
 
 # Função para cadastrar usuário
 def cadastrar_usuario():
+    
     cpf_cnpj = entry_cpf_cnpj.get()
     nome = entry_nome.get()
     email = entry_email.get()
-
+    
     if nome and email and cpf_cnpj:
         try:
             # Insere os dados no Supabase
