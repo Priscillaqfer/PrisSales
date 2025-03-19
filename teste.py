@@ -12,8 +12,15 @@ key: str = os.getenv("SUPABASE_KEY")
 # Criar cliente do Supabase
 supabase: Client = create_client(url, key)
 
-# Consultar as tabelas da tabela "Clientes" no esquema 'public'
-response = supabase.table("Clientes").select("*").execute()
+# Consultar: response = supabase.table("Clientes").select("*").execute()
+data = {
+    "cpf_cnpj": "12345612355",
+    "nome": "ISABEL",
+    "email": "ISABEEL@TESTE1.COM"
+}
+
+# Inserção de dados na tabela "Clientes"
+response = supabase.table("Clientes").insert(data).execute()
 
 # Exibir a resposta
 print("Resposta da consulta:", response)
@@ -25,4 +32,3 @@ if response.data:
         print(row)
 else:
     print("Nenhum dado encontrado na tabela 'Clientes'.")
-#TESTE 123247s
