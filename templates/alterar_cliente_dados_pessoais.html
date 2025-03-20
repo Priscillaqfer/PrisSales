@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Dados Pessoais</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Alterar Dados Pessoais</h1>
+        <form action="{{ url_for('alterar_cliente_dados_pessoais', cpf=cliente['cpf_cnpj']) }}" method="POST">
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" value="{{ cliente['nome'] }}" required><br>
+
+            <label for="email">E-mail:</label>
+            <input type="email" name="email" id="email" value="{{ cliente['email'] }}" required><br>
+
+            <label for="cpf_cnpj">CPF/CNPJ:</label>
+            <input type="text" name="cpf_cnpj" id="cpf_cnpj" value="{{ cliente['cpf_cnpj'] }}" required readonly><br>
+
+            <button type="submit">Alterar Dados</button>
+        </form>
+    </div>
+</body>
+</html>
