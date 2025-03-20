@@ -108,3 +108,4 @@ def alterar_cliente_buscarcpf():
 if __name__ == '__main__':
     app.run(debug=True)
 
+#teste#
