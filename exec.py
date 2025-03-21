@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask import Flask, render_template, request, redirect, url_for
 from supabase import create_client, Client
 import os
 from dotenv import load_dotenv
@@ -29,26 +28,60 @@ def cadastro_cliente():
         cpf_cnpj = request.form['cpf_cnpj']
         nome = request.form['nome']
         email = request.form['email']
+        telefone = request.form['telefone']
+        tipo_telefone = request.form['tipo_telefone']
+        nome_rua = request.form['nome_rua']
+        numero = request.form['numero']
+        cidade = request.form['cidade']
+        estado = request.form['estado']
+        cep = request.form['cep']
+        tipo_endereco = request.form['tipo_endereco']
 
-        # Inserir os dados no Supabase
         try:
-            response = supabase.table('Clientes').insert({
+            # Inserir os dados na tabela "Clientes"
+            response_client = supabase.table('Clientes').insert({
                 "cpf_cnpj": cpf_cnpj,
                 "nome": nome,
                 "email": email
             }).execute()
 
-            if response.data:
-                return redirect(url_for('index'))
-            else:
+            if not response_client.data:
                 return "Erro ao cadastrar cliente", 400
+
+            # Inserir os dados na tabela "Clientes_Endereco"
+            response_endereco = supabase.table('Clientes_Endereco').insert({
+                "cpf_cnpj": cpf_cnpj,
+                "rua": nome_rua,
+                "numero": numero,
+                "cidade": cidade,
+                "estado": estado,
+                "cep": cep,
+                "tipo": tipo_endereco
+            }).execute()
+
+            if not response_endereco.data:
+                return "Erro ao cadastrar endereço", 400
+
+            # Inserir os dados na tabela "Clientes_Telefone"
+            response_telefone = supabase.table('Clientes_Telefone').insert({
+                "cpf_cnpj": cpf_cnpj,
+                "telefone": telefone,
+                "tipotelefone": tipo_telefone
+            }).execute()
+
+            if not response_telefone.data:
+                return "Erro ao cadastrar telefone", 400
+
+            # Se tudo estiver correto, redireciona para a página principal
+            flash('Cliente cadastrado com sucesso!', 'success')
+            return redirect(url_for('index'))
+
         except Exception as e:
-            return f"Erro ao cadastrar: {str(e)}", 500
+            return f"Erro ao cadastrar cliente: {str(e)}", 500
 
     return render_template('cadastro_cliente.html')
 
-# Rota para cadastrar produto (apenas exemplo, será semelhante à de clientes)
-
+# Rota para cadastrar produto
 @app.route('/cadastro_produto', methods=['GET', 'POST'])
 def cadastro_produto():
     if request.method == 'POST':
@@ -79,9 +112,7 @@ def cadastro_produto():
 
     return render_template('cadastro_produto.html')
 
-if __name__ == '__main__':
-    app.run(debug=True)
-
+# Rota para alterar produto
 @app.route('/alterar_produto', methods=['GET'])
 def alterar_produto():
     return render_template('alterar_produto.html')
@@ -104,8 +135,5 @@ def alterar_cliente_buscarcpf():
     # Se for GET, exibe o formulário para inserir o CPF
     return render_template('alterar_cliente_buscarcpf.html')
 
-
 if __name__ == '__main__':
     app.run(debug=True)
-
-#teste#
